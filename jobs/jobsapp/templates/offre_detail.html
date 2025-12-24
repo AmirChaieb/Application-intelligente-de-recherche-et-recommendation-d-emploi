@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mt-5">
+  <div class="card" style="background-color: #2a2b38; border: 1px solid #333;">
+    <div class="card-body">
+      <h2 class="text-light">{{ job.title }}</h2>
+      <h5 class="mb-3" style="color: #ffeba7;">{{ job.company }} - {{ job.location }}</h5>
+
+      <p class="text-light"><strong>Description :</strong></p>
+      <p class="text-light" style="white-space: pre-wrap;">{{ job.description }}</p>
+
+      <p class="text-light mt-4">
+        <strong>Expiration :</strong> {{ job.expiration_date }}
+      </p>
+
+      {% if correspend %}
+        <div class="mt-4">
+          <h5 class="text-success">Compétences correspondantes :</h5>
+          <ul class="list-disc list-inside text-white">
+    {% for comp in correspend %}
+        <li>✅ {{ comp }}</li>
+    {% empty %}
+        <li>Aucune</li>
+    {% endfor %}
+</ul>
+        </div>
+      {% endif %}
+
+      {% if manque %}
+        <div class="mt-4">
+          <h5 class="text-danger">Compétences manquantes :</h5>
+          <ul class="list-disc list-inside text-white">
+    {% for comp in manque %}
+        <li>❌ {{ comp }}</li>
+    {% empty %}
+        <li>Aucune</li>
+    {% endfor %}
+</ul>
+        </div>
+      {% endif %}
+
+      <div class="text-end mt-4">
+        <a href="{{ job.url }}" target="_blank" class="btn btn-primary">
+          Postuler maintenant
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

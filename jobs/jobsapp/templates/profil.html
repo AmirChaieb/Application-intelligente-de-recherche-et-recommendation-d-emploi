@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mt-4">
+  <h2 class="mb-4">Mon Profil</h2>
+
+  <div class="row">
+    <!-- Colonne gauche : Upload CV -->
+    <div class="col-md-8">
+      <h4>Uploader un nouveau CV</h4>
+      <br>
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <script>
+  $(document).ready(function() {
+    $('.select2').select2({
+      placeholder: "Choisissez vos domaines",
+      allowClear: true
+    });
+  });
+</script>
+
+        <button type="submit" class="btn btn-primary">Uploader</button>
+      </form>
+    </div>
+
+    <!-- Colonne droite : Aperçu CV -->
+    <div class="col-md-4">
+      {% if last_cv %}
+        <h4 class="mb-3">Aperçu du CV</h4>
+        <div style="border: 1px solid #ccc; border-radius: 5px; overflow: hidden;">
+          <iframe src="{% url 'view_cv' last_cv.pdf_slug %}"
+                  width="100%"
+                  height="500px"
+                  style="border: none;"></iframe>
+        </div>
+      {% else %}
+        <p>Pas encore de CV</p>
+      {% endif %}
+    </div>
+  </div><br><br><br>
+
+
+
+  <h3>Historique de mes CVs</h3>
+<div class="row">
+  {% for cv in user_cvs %}
+    <div class="col-md-3 mb-4">
+      <div class="card">
+        <div class="card-body p-2">
+          <iframe src="{% url 'view_cv' cv.pdf_slug %}"
+                  width="100%"
+                  height="250px"
+                  style="border: none;"></iframe>
+          <p class="mt-2 text-center text-muted" style="font-size: 0.9em;">
+            Déposé le {{ cv.uploaded_at|date:"d M Y H:i" }}
+          </p>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p>Aucun CV déposé pour l’instant.</p>
+  {% endfor %}
+</div>
+</div>
+
+{% endblock %}

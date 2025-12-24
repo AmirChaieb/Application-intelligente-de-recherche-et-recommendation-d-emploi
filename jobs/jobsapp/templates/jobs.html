@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if user.is_authenticated %}
+<div class="container mt-5">
+  <h2 class="mb-4 text-white">Offres correspondant à votre dernier CV</h2>
+
+  {% if message %}
+    <div class="alert alert-warning">{{ message }}</div>
+  {% endif %}
+
+  {% for score_obj in job_scores %}
+    <div class="card mb-4 w-100" style="background-color: #2a2b38; border: 1px solid #333;">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start">
+          <!-- Partie gauche -->
+          <div style="flex: 1;">
+            <h4 class="card-title text-light mb-1">{{ score_obj.job_offer.title }}</h4>
+            <h6 class="mb-2" style="color: #ffeba7;">
+              {{ score_obj.job_offer.company }} - {{ score_obj.job_offer.location }}
+            </h6>
+            <p class="card-text text-light" style="font-size: 14px;">
+              {{ score_obj.job_offer.description|truncatechars:300 }}
+            </p>
+            <p class="mb-0" style="color: #ccc;">
+              <small>🗓️ Expire le : {{ score_obj.job_offer.expiration_date }}</small>
+            </p>
+          </div>
+
+          <!-- Partie droite -->
+          <div class="text-end ms-3" style="min-width: 140px;">
+            <div class="mb-2">
+              <span class="badge"
+                    style="font-size: 13px;
+                           background-color: {{ score_obj.color }};
+                           color: #fff;
+                           padding: 8px 12px;
+                           border-radius: 20px;">
+                {{ score_obj.score|floatformat:0 }}% match
+              </span>
+            </div>
+            <a href="{% url 'offre_detail' score_obj.job_offer.id %}" class="btn btn-sm btn-outline-light mt-2">
+             Voir l'offre
+            </a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p class="text-white">Aucune offre ne correspond à votre CV pour le moment.</p>
+  {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

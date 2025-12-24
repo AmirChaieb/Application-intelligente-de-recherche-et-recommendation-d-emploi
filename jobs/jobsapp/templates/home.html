@@ -1,0 +1,42 @@
+{% extends 'base.html' %} {% block content %} {% if user.is_authenticated %}
+<div class="container mt-4">
+  <h2 class="mb-4">Offres d'emploi</h2>
+
+  {% for offre in offres %}
+    <div class="card mb-3 w-100">
+      <div class="card-body">
+        <h5 class="card-title">{{ offre.title }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">{{ offre.company }} - {{ offre.location }}</h6>
+        <p class="card-text">
+          {{ offre.description|truncatechars:300 }}
+        </p>
+        <p class="text-end text-muted mb-0"><small>Date d'expiration : {{ offre.expiration_date }}</small></p>
+        <a href="{{ offre.url }}" class="btn btn-sm btn-outline-primary mt-2" target="_blank">Voir l'offre</a>
+
+      </div>
+    </div>
+  {% empty %}
+    <p>Aucune offre disponible.</p>
+  {% endfor %}
+</div>
+{% endif %} {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
